@@ -13,3 +13,5 @@
 3. **POST** /api/v1/person/{id} - **изменяет** сущность Person с идом id.
 4. **PUT** /api/v1/person - **добавляет** новую сущность Person.
 5. DELETE /api/v1/person/{id} - удаляет сущность Person с идом id.
+<br />
+Требуется .NET Core 2.2

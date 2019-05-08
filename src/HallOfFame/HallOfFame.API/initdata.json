@@ -1,0 +1,28 @@
+{
+  "persons": [
+    {
+      "name": "Stevie Ray",
+      "displayName": "Vaughan",
+      "skills": [
+        {
+          "Name": "Playing guitar",
+          "Level": 10
+        },
+        {
+          "Name": "Singing",
+          "Level":  8
+        }
+      ]
+    },
+    {
+      "name": "Linus Torvalds",
+      "displayName": "Linus",
+      "skills": [
+        {
+          "Name": "Programming",
+          "Level": 10
+        }
+      ]
+    }
+  ]
+}

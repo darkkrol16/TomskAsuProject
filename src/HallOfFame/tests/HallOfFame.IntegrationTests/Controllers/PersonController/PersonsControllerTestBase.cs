@@ -46,9 +46,12 @@ namespace TomskAsuProject.HallOfFame.IntegrationTests.Controllers
 
         protected void AssertModelStateInvalid(JObject modelState)
         {
-            Assert.True(modelState.ContainsKey("Name"));
-            Assert.True(modelState.ContainsKey("DisplayName"));
-            Assert.True(modelState.ContainsKey("Skills[0].Level"));
+            Assert.True(modelState.ContainsKey("errors"));
+            var errors = (JObject)modelState["errors"];
+
+            Assert.True(errors.ContainsKey("Name"));
+            Assert.True(errors.ContainsKey("DisplayName"));
+            Assert.True(errors.ContainsKey("Skills[0].Level"));
         }
 
         protected PersonDTO GetPersonFirst()

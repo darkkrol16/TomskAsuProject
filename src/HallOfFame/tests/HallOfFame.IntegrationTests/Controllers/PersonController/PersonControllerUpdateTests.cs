@@ -23,9 +23,10 @@ namespace TomskAsuProject.HallOfFame.IntegrationTests.Controllers
         {
             //Arrange
             var httpClient = _factory.CreateClient();
+            var person = GetPersonFirst();
 
             //Act
-            var httpResponse = await httpClient.PostAsJsonAsync("/api/v1/person/0", new JObject());
+            var httpResponse = await httpClient.PostAsJsonAsync("/api/v1/person/0", person);
 
             //Assert
             Assert.Equal(HttpStatusCode.NotFound, httpResponse.StatusCode);

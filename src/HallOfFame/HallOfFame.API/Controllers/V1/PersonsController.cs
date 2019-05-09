@@ -12,8 +12,9 @@ using TomskASUProject.HallOfFame.API.Models;
 
 namespace TomskASUProject.HallOfFame.API.Controllers.V1
 {
+    [ApiController]
     [ApiVersion("1")]
-    [Route("api/v1/person")]
+    [Route("api/v{apiVersion:apiVersion}/person")]
     public class PersonsController : Controller
     {
         private readonly ILogger<PersonsController> _logger;
@@ -26,7 +27,7 @@ namespace TomskASUProject.HallOfFame.API.Controllers.V1
         }
 
 
-        [HttpGet("~/api/v1/persons")]
+        [HttpGet("~/api/v{apiVersion:apiVersion}/persons")]
         [ProducesResponseType(typeof(IEnumerable<PersonResponseDTO>), (int)HttpStatusCode.OK)]
         public async Task<ActionResult<IEnumerable<PersonResponseDTO>>> GetPersonsAsync ()
         {

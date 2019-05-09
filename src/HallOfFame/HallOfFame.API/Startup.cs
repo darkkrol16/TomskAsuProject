@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -34,11 +35,15 @@ namespace TomskASUProject.HallOfFame.API
                 .AddCustomDbContext(Configuration)
                 .AddSwagger()
                 .AddApiVersioning()
+                .AddVersionedApiExplorer(o => {
+                    o.GroupNameFormat = "'v'V";
+                    o.SubstituteApiVersionInUrl = true;
+                })
                 .AddTransient<IPersonRepository, PersonRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IApiVersionDescriptionProvider apiProvider)
         {
             if (env.IsDevelopment())
             {
@@ -47,7 +52,10 @@ namespace TomskASUProject.HallOfFame.API
 
             app.UseSwagger();
             app.UseSwaggerUI(options => {
-                options.SwaggerEndpoint("/swagger/v1/swagger.json", "Hall of fame API");
+                foreach (var description in apiProvider.ApiVersionDescriptions)
+                {
+                    options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json", $"Hall of fame API {description.GroupName}");
+                }
             });
 
             app.UseMvcWithDefaultRoute();
@@ -79,11 +87,17 @@ namespace TomskASUProject.HallOfFame.API
         public static IServiceCollection AddSwagger(this IServiceCollection services)
         {
             services.AddSwaggerGen(options => {
-                options.SwaggerDoc("v1", new Info
+                var apiProvider = services.BuildServiceProvider()
+                    .GetRequiredService<IApiVersionDescriptionProvider>();
+
+                foreach (var description in apiProvider.ApiVersionDescriptions)
                 {
-                    Title = "Hall of fame API",
-                    Version = "v1",
-                });
+                    options.SwaggerDoc(description.GroupName, new Info
+                    {
+                        Title = $"Hall of fame API",
+                        Version = $"{description.GroupName}",
+                    });
+                }
             });
             return services;
         }

@@ -15,3 +15,34 @@
 5. DELETE /api/v1/person/{id} - удаляет сущность Person с идом id.
 <br />
 Требуется .NET Core 2.2
+
+### Развертывание с помощью docker-compose
+Если вы хотите развернуть этот проект с использованием docker-compose, вам необходимо:
+1. Создать файл docker-compose.yml следующего содержания:
+
+```
+version: '3.4'
+
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2017-latest-ubuntu
+    environment:
+      SA_PASSWORD: "Password123"
+      ACCEPT_EULA: "Y"
+    ports:
+      - 1401:1433
+
+
+  halloffame.api:
+    image: darkkrol16/halloffame.api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+    ports:
+      - "60000:80"
+    depends_on:
+      - sqlserver
+```
+
+2. Вызвать docker-compose up из папки, в которой содержится файл docker-compose.yml
+3. Перейти по http://localhost:60000

@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using Microsoft.AspNetCore.Rewrite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -57,6 +58,13 @@ namespace TomskASUProject.HallOfFame.API
                     options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json", $"Hall of fame API {description.GroupName}");
                 }
             });
+
+
+            //Making redirect from index page to swagger page
+            var rewriter = new RewriteOptions();
+            rewriter.AddRedirect("^$", "swagger");
+            app.UseRewriter(rewriter);
+
 
             app.UseMvcWithDefaultRoute();
         }

@@ -40,6 +40,8 @@ services:
 2. Вызвать docker-compose up из папки, в которой содержится файл docker-compose.yml
 3. Перейти по http://localhost:60000
 
+P.S. Так как в dockerhub репозиториях есть только MSSQL 2017 и MSSQL 2019, то было решено использовать MSSQL 2017 (согласно заданию требуется 2016).
+
 ### Описание эндпоинтов:
 1. GET /api/v1/persons - возвращает список всех сущностей Person. 
 2. GET /api/v1/person/{id} - возвращает сущность Person с идом id и связанные с ним Skill.
